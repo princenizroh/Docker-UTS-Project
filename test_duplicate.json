@@ -1,0 +1,11 @@
+{
+  "events": [
+    {
+      "topic": "test.duplicate",
+      "event_id": "evt-duplicate-001",
+      "timestamp": "2025-10-24T10:00:00Z",
+      "source": "test-client",
+      "payload": {"message": "This is a duplicate test"}
+    }
+  ]
+}

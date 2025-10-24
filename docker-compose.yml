@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uts-publisher
+    networks:
+      - aggregator-network
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8081
+      - LOG_LEVEL=INFO
+      - DB_PATH=/app/data/publisher_dedup.db
+    volumes:
+      - publisher-data:/app/data
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8081/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uts-aggregator
+    networks:
+      - aggregator-network
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - LOG_LEVEL=INFO
+      - DB_PATH=/app/data/aggregator_dedup.db
+    volumes:
+      - aggregator-data:/app/data
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    depends_on:
+      - publisher
+
+networks:
+  aggregator-network:
+    driver: bridge
+    internal: false  
+
+volumes:
+  aggregator-data:
+    driver: local
+  publisher-data:
+    driver: local

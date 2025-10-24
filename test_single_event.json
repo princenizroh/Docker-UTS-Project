@@ -1,0 +1,14 @@
+{
+  "events": [
+    {
+      "topic": "user.login",
+      "event_id": "evt-001",
+      "timestamp": "2025-10-24T10:00:00Z",
+      "source": "auth-service",
+      "payload": {
+        "user_id": "user123",
+        "ip": "192.168.1.1"
+      }
+    }
+  ]
+}

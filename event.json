@@ -1,0 +1,14 @@
+{
+  "events": [
+    {
+      "topic": "test.demo",
+      "event_id": "evt-001",
+      "timestamp": "2024-01-15T10:00:00Z",
+      "source": "quickstart",
+      "payload": {
+        "message": "Hello World"
+      }
+    }
+  ]
+}
+
